@@ -12,7 +12,10 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { Public } from './public';
 import { CreateCustomerDto } from 'src/controller/customer/dto/create-customer.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { LoginDto } from './dto/login-user.dto';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -20,8 +23,8 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.phone, signInDto.password);
+  signIn(@Body() signInDto: LoginDto) {
+    return this.authService.signIn(signInDto);
   }
 
   @UseGuards(AuthGuard)
@@ -37,6 +40,7 @@ export class AuthController {
     return this.authService.register(signUpDto);
   }
 
+  @Public()
   @Post('refresh-token')
   refreshToken(@Request() req) {
     return this.authService.refreshToken(req.body.refresh_token);

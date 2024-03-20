@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CustomerService } from 'src/controller/customer/customer.service';
 import * as bcrypt from 'bcrypt';
 import { CreateCustomerDto } from 'src/controller/customer/dto/create-customer.dto';
+import { LoginDto } from './dto/login-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -15,13 +16,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(phone: string, pass: string) {
+  async signIn(loginDto: LoginDto) {
     try {
-      const user = await this.customerService.findOneWithPhone(phone);
+      const user = await this.customerService.findOneWithPhone(loginDto.phone);
       if (!user) {
         return new HttpException('Số điện thoại không tồn tại!', 404);
       }
-      const isMatch = await bcrypt.compare(pass, user.password);
+      const isMatch = await bcrypt.compare(loginDto.password, user.password);
       if (!isMatch) {
         return new HttpException('Mật khẩu không đúng!', 401);
       }
@@ -38,19 +39,17 @@ export class AuthService {
   async refreshToken(refresh_token: string) {
     try {
       const payload = await this.jwtService.verifyAsync(refresh_token, {
-        secret: process.env.JWT_SECRET,
+        secret: process.env.JWT_SECRET_REFRESH,
       });
+      if (!payload) {
+        return new HttpException('Invalid refresh token!', 419);
+      }
       const user = await this.customerService.findOneWithPhone(payload.phone);
-      if (!user) {
-        return new HttpException('User not found!', 404);
-      }
-      if (user.refresh_token !== refresh_token) {
-        return new HttpException('Invalid refresh token!', 401);
-      }
       const newPayload = this.payload(user);
+      console.log('user', newPayload);
       return this.generateToken(newPayload);
     } catch (error) {
-      console.log('error', error);
+      console.log('error refresh token', error);
       throw new InternalServerErrorException();
     }
   }
@@ -59,8 +58,8 @@ export class AuthService {
     try {
       const access_token = await this.jwtService.signAsync(payload);
       const refresh_token = await this.jwtService.signAsync(payload, {
-        secret: process.env.JWT_SECRET,
-        expiresIn: process.env.JWT_TOKEN_EXPIRATION_TIME,
+        secret: process.env.JWT_SECRET_REFRESH,
+        expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRATION_TIME,
       });
       await this.customerService.updateRefreshToken(payload.sub, refresh_token);
       return { access_token, refresh_token };
@@ -75,7 +74,7 @@ export class AuthService {
       username: user.name,
       phone: user.phone,
       sub: user._id,
-      role: 'customer',
+      role: user.role == 1 ? 'customer' : 'admin',
     };
   }
 
