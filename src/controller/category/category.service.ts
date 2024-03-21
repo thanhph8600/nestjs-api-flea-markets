@@ -15,8 +15,6 @@ export class CategoryService {
     const category = await this.categoryModel.findOne({
       name: createCategoryDto.name,
     });
-    console.log(createCategoryDto);
-    console.log(category);
     if (category) {
       throw new InternalServerErrorException('Tên đã được dùng');
     }
@@ -49,7 +47,6 @@ export class CategoryService {
   }
 
   update(id: string, updateCategoryDto: UpdateCategoryDto) {
-    console.log(updateCategoryDto);
     try {
       return this.categoryModel.findByIdAndUpdate(
         { _id: id },

@@ -6,6 +6,7 @@ import { ProductModule } from './controller/product/product.module';
 import { AuthModule } from './middleware/auth/auth.module';
 import { CategoryModule } from './controller/category/category.module';
 import { DetailCategoryModule } from './controller/detail-category/detail-category.module';
+import { SpecificationModule } from './controller/specification/specification.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { DetailCategoryModule } from './controller/detail-category/detail-catego
     AuthModule,
     CategoryModule,
     DetailCategoryModule,
+    SpecificationModule,
   ],
 })
 export class AppModule {}

@@ -12,9 +12,22 @@ export class DetailCategoryService {
     private readonly detailCategoryModel: Model<DetailCategory>,
   ) {}
 
-  create(createDetailCategoryDto: CreateDetailCategoryDto) {
-    console.log(createDetailCategoryDto);
-    return 'This action adds a new detailCategory';
+  async create(createDetailCategoryDto: CreateDetailCategoryDto) {
+    const category = await this.detailCategoryModel.findOne({
+      name: createDetailCategoryDto.name,
+    });
+    if (category) {
+      throw new InternalServerErrorException('Tên đã được dùng');
+    }
+    try {
+      const createdCategory = await this.detailCategoryModel.create(
+        createDetailCategoryDto,
+      );
+      return createdCategory;
+    } catch (error) {
+      console.log('error', error);
+      throw new InternalServerErrorException();
+    }
   }
 
   findAll() {
@@ -27,7 +40,6 @@ export class DetailCategoryService {
   }
 
   findByIdCategory(id: string) {
-    console.log(id);
     try {
       return this.detailCategoryModel.find({ id_category: id });
     } catch (error) {
@@ -46,11 +58,23 @@ export class DetailCategoryService {
   }
 
   update(id: string, updateDetailCategoryDto: UpdateDetailCategoryDto) {
-    console.log(updateDetailCategoryDto);
-    return `This action updates a #${id} detailCategory`;
+    try {
+      return this.detailCategoryModel.findByIdAndUpdate(
+        { _id: id },
+        updateDetailCategoryDto,
+      );
+    } catch (error) {
+      console.log('error', error);
+      throw new InternalServerErrorException();
+    }
   }
 
   remove(id: string) {
-    return `This action removes a #${id} detailCategory`;
+    try {
+      return this.detailCategoryModel.findByIdAndDelete(id);
+    } catch (error) {
+      console.log('error', error);
+      throw new InternalServerErrorException();
+    }
   }
 }

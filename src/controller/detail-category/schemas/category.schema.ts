@@ -14,6 +14,9 @@ export class DetailCategory extends Document {
 
   @Prop()
   link: string;
+
+  @Prop()
+  specification: Array<string>;
 }
 
 export const DetailCategorySchema =

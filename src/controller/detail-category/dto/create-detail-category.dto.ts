@@ -12,4 +12,7 @@ export class CreateDetailCategoryDto {
 
   @IsNotEmpty()
   link: string;
+
+  @IsNotEmpty()
+  specification: Array<string>;
 }
