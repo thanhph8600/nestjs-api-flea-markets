@@ -11,6 +11,7 @@ import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Public } from 'src/middleware/auth/public';
 
 @ApiBearerAuth()
 @ApiTags('customers')
@@ -18,16 +19,19 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
+  @Public()
   @Post()
   create(@Body() createCustomerDto: CreateCustomerDto) {
     return this.customerService.create(createCustomerDto);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.customerService.findAll();
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.customerService.findOne(id);

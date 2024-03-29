@@ -7,6 +7,10 @@ import { AuthModule } from './middleware/auth/auth.module';
 import { CategoryModule } from './controller/category/category.module';
 import { DetailCategoryModule } from './controller/detail-category/detail-category.module';
 import { SpecificationModule } from './controller/specification/specification.module';
+import { ProvinceModule } from './controller/address/province/province.module';
+import { DistrictModule } from './controller/address/district/district.module';
+import { WardModule } from './controller/address/ward/ward.module';
+import { UploadModule } from './middleware/upload/upload.module';
 
 @Module({
   imports: [
@@ -18,6 +22,10 @@ import { SpecificationModule } from './controller/specification/specification.mo
     CategoryModule,
     DetailCategoryModule,
     SpecificationModule,
+    ProvinceModule,
+    DistrictModule,
+    WardModule,
+    UploadModule,
   ],
 })
 export class AppModule {}

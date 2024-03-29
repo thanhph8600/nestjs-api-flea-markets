@@ -9,8 +9,9 @@ export interface Product extends Document {
   selling_price: number;
   description: string;
   specifications: object;
-  address: string;
+  address: object;
   status: string;
+  thumbnail: object;
   created_at: Date;
   update_at: Date;
 }

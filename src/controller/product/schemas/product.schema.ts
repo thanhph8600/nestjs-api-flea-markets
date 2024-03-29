@@ -20,7 +20,7 @@ export class Product {
   @Prop()
   price: number;
 
-  @Prop()
+  @Prop({ default: 0 })
   selling_price: number;
 
   @Prop()
@@ -29,11 +29,14 @@ export class Product {
   @Prop({ type: SchemaTypes.Mixed })
   specifications: object;
 
-  @Prop()
-  address: string;
+  @Prop({ type: SchemaTypes.Mixed })
+  address: object;
 
-  @Prop()
+  @Prop({ default: 'complete' })
   status: string;
+
+  @Prop({ type: SchemaTypes.Mixed })
+  thumbnail: object;
 
   @Prop({ default: Date.now })
   created_at: Date;
