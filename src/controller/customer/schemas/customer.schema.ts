@@ -17,6 +17,9 @@ export class Customer {
   @Prop()
   phone: string;
 
+  @Prop({ default: 'avata-default.jpg' })
+  avata: string;
+
   @Prop({ default: 1 })
   role: number;
 

@@ -13,6 +13,8 @@ export class CreateCustomerDto {
   @Length(10, 10)
   phone: string;
 
+  avata: string;
+
   @ApiProperty()
   @IsNotEmpty()
   password: string;

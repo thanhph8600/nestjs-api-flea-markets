@@ -11,7 +11,6 @@ import { Ward } from './schemas/ward.schema';
 export class WardService {
   constructor(@InjectModel('Ward') private readonly wardModel: Model<Ward>) {}
   findAll() {
-    console.log('get Ward');
     return this.wardModel.find().exec();
   }
 
@@ -23,7 +22,6 @@ export class WardService {
       if (!listDistrict) {
         return new HttpException('!ID Province', 400);
       }
-      console.log('get by id district');
       return listDistrict;
     } catch (error) {
       throw new InternalServerErrorException();

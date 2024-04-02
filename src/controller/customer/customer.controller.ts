@@ -37,6 +37,12 @@ export class CustomerController {
     return this.customerService.findOne(id);
   }
 
+  @Public()
+  @Get('phone/:phone')
+  findOneByPhone(@Param('phone') phone: string) {
+    return this.customerService.findOneWithPhone(phone);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

@@ -1,14 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { ObjectId } from 'mongoose';
 
 export class CreateProductDto {
   @ApiProperty()
-  id_customer: string;
+  id_customer: ObjectId;
 
   @ApiProperty()
-  id_category: string;
+  id_category: ObjectId;
 
   @ApiProperty()
-  id_category_detail: string;
+  id_category_detail: ObjectId;
 
   @ApiProperty()
   title: string;

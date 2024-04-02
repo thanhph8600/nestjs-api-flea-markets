@@ -6,6 +6,7 @@ export interface Customer extends Document {
   email: string;
   phone: string;
   password: string;
+  avata: string;
   role: number;
   refresh_token: string;
 }

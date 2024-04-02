@@ -1,11 +1,11 @@
 import {
   Controller,
   Post,
-  Param,
   Delete,
   UseInterceptors,
   UploadedFile,
   UploadedFiles,
+  Body,
 } from '@nestjs/common';
 import { UploadService } from './upload.service';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
@@ -60,8 +60,8 @@ export class UploadController {
     });
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.uploadService.remove(id);
+  @Delete('delete-files')
+  remove(@Body() listFile: Array<string>) {
+    return this.uploadService.deleteFiles(listFile);
   }
 }

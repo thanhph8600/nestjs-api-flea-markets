@@ -9,7 +9,6 @@ export class DistrictService {
     @InjectModel('District') private readonly districtModel: Model<District>,
   ) {}
   findAll() {
-    console.log('get District');
     return this.districtModel.find().exec();
   }
 
@@ -19,7 +18,6 @@ export class DistrictService {
       const listDistrict = this.districtModel.find({
         _province_id: idProvince,
       });
-      console.log('get by id province');
       return listDistrict;
     } catch (error) {
       throw new InternalServerErrorException();

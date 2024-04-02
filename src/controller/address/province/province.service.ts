@@ -9,7 +9,6 @@ export class ProvinceService {
     @InjectModel('Province') private readonly provinceModel: Model<Province>,
   ) {}
   findAll() {
-    console.log('get province');
     return this.provinceModel.find().exec();
   }
 }

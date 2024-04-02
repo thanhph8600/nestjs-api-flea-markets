@@ -51,8 +51,10 @@ export class CustomerService {
     return this.customerModel.find().exec();
   }
 
-  findOne(id: string) {
-    return this.customerModel.findById(id);
+  async findOne(id: string) {
+    const customer = await this.customerModel.findById(id);
+    customer.avata = `${process.env.URL_API}uploads/${customer.avata}`;
+    return customer;
   }
 
   findOneWithPhone(phone: string) {

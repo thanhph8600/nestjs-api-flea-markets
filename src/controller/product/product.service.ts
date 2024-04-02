@@ -21,19 +21,71 @@ export class ProductService {
   }
 
   findAll() {
-    return this.productModel.find().exec();
+    const listProduct = this.productModel.find();
+    return listProduct;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: string) {
+    try {
+      const product = await this.productModel
+        .findById(id)
+        .populate('id_category')
+        .populate('id_customer')
+        .populate('id_category_detail')
+        .exec();
+      product.thumbnail = (product.thumbnail as string[]).map((image) => {
+        return `${process.env.URL_API}uploads/${image}`;
+      });
+      product.id_customer[0].avata = `${process.env.URL_API}uploads/${product.id_customer[0].avata}`;
+      return product;
+    } catch (error) {
+      console.log('error', error);
+      throw new InternalServerErrorException();
+    }
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    console.log('updateProductDto', updateProductDto);
-    return `This action updates a #${id} product`;
+  async findByIdCategory(idCategory: string) {
+    if (idCategory == '') {
+      return [];
+    }
+    try {
+      let products = await this.productModel.find({
+        id_category: idCategory,
+      });
+      if (products.length == 0) {
+        products = await this.productModel.find({
+          id_category_detail: idCategory,
+        });
+      }
+      return products;
+    } catch (error) {
+      console.log('error', error);
+      throw new InternalServerErrorException();
+    }
   }
 
-  remove(id: number) {
+  async findByIdCategoryDeatil(idCategoryDetail: string) {
+    try {
+      const products = await this.productModel.find({
+        id_category_detail: idCategoryDetail,
+      });
+      return products;
+    } catch (error) {
+      console.log('error', error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  update(id: string, updateProductDto: UpdateProductDto) {
+    try {
+      return this.productModel.findByIdAndUpdate({ _id: id }, updateProductDto);
+    } catch (error) {
+      console.log('error', error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  remove(id: string) {
     return `This action removes a #${id} product`;
   }
 }
