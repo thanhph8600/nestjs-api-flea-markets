@@ -43,13 +43,13 @@ export class Product {
   status: string;
 
   @Prop({ type: SchemaTypes.Mixed })
-  thumbnail: object;
+  thumbnail: Array<string>;
 
   @Prop({ default: Date.now })
   created_at: Date;
 
-  @Prop()
-  updated_at: Date;
+  @Prop({ default: () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) })
+  end_at: Date;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

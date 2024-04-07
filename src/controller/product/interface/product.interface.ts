@@ -11,7 +11,7 @@ export interface Product extends Document {
   specifications: object;
   address: object;
   status: string;
-  thumbnail: object;
+  thumbnail: Array<string>;
   created_at: Date;
-  update_at: Date;
+  end_at: Date;
 }

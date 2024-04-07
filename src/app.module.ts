@@ -11,6 +11,11 @@ import { ProvinceModule } from './controller/address/province/province.module';
 import { DistrictModule } from './controller/address/district/district.module';
 import { WardModule } from './controller/address/ward/ward.module';
 import { UploadModule } from './middleware/upload/upload.module';
+import { RoomChatModule } from './controller/chat/room-chat/room-chat.module';
+import { MessengerModule } from './controller/chat/messenger/messenger.module';
+import { WebSocketModule } from './web-socket/web-socket.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -26,6 +31,12 @@ import { UploadModule } from './middleware/upload/upload.module';
     DistrictModule,
     WardModule,
     UploadModule,
+    RoomChatModule,
+    MessengerModule,
+    WebSocketModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', '..', 'dist', 'client'),
+    }),
   ],
 })
 export class AppModule {}

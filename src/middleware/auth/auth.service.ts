@@ -8,6 +8,7 @@ import { CustomerService } from 'src/controller/customer/customer.service';
 import * as bcrypt from 'bcrypt';
 import { CreateCustomerDto } from 'src/controller/customer/dto/create-customer.dto';
 import { LoginDto } from './dto/login-user.dto';
+import { Customer } from 'src/controller/customer/schemas/customer.schema';
 
 @Injectable()
 export class AuthService {
@@ -69,12 +70,13 @@ export class AuthService {
     }
   }
 
-  payload(user: any) {
+  payload(user: Customer) {
     return {
       username: user.name,
       phone: user.phone,
       sub: user._id,
       role: user.role == 1 ? 'customer' : 'admin',
+      avata: process.env.URL_API + 'uploads/' + user.avata,
     };
   }
 

@@ -5,6 +5,7 @@ export type CustommerDocument = HydratedDocument<Customer>;
 
 @Schema()
 export class Customer {
+  _id: string;
   @Prop()
   name: string;
 

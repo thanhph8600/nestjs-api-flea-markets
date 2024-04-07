@@ -27,7 +27,7 @@ export class CreateProductDto {
   specifications: object;
 
   @ApiProperty()
-  address: object;
+  address: Array<string>;
 
   @ApiProperty()
   status: string;
@@ -36,5 +36,5 @@ export class CreateProductDto {
 
   created_at: Date;
 
-  update_at: Date;
+  end_at: Date;
 }
