@@ -12,6 +12,12 @@ export class Messenger {
   @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Customer' }] })
   id_customer: ObjectId;
 
+  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Product' }] })
+  id_product: ObjectId;
+
+  @Prop()
+  thumbnail: string;
+
   @Prop()
   messenger: string;
 

@@ -25,8 +25,14 @@ export class WebSocketGateway {
     @MessageBody()
     payload: Messenger,
   ): Promise<Messenger> {
-    this.server.emit('messenger', payload); // broadcast messages
-    return payload;
+    console.log(payload);
+    try {
+      this.server.emit('messenger', payload); // broadcast messages
+      return payload;
+    } catch (error) {
+      console.log('error emit mess');
+      console.log(error);
+    }
   }
 
   @SubscribeMessage('identity')

@@ -12,6 +12,8 @@ export class CreateMessengerDto {
   messenger: string;
 
   isWatched: boolean;
+  id_product: ObjectId;
+  thumbnail: string;
 
   @ApiProperty()
   created_at: Date;

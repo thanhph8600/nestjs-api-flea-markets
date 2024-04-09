@@ -24,13 +24,17 @@ export class MessengerController {
   create(
     @Param('idCustomer') idCustomer: ObjectId,
     @Request() req,
-    @Body() messenger: { messenger: string },
+    @Body()
+    messenger: { messenger: string; id_product: ObjectId; thumbnail: string },
   ) {
+    console.log(messenger);
     const dataCreate: CreateMessenger = {
       id_room_chat: '',
       id_customer: req.user.sub,
       id_receiver: idCustomer,
       messenger: messenger.messenger,
+      id_product: messenger.id_product,
+      thumbnail: messenger.thumbnail,
     };
     return this.messengerService.create(dataCreate);
   }

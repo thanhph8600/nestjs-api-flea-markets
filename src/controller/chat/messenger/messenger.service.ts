@@ -35,6 +35,7 @@ export class MessengerService {
         idCustomer,
       )) as RoomChat;
       createMessengerDto.id_room_chat = roomChat._id;
+      console.log(createMessengerDto);
       return this.MessengerModel.create(createMessengerDto);
     } catch (error) {
       console.log(error);
@@ -69,6 +70,10 @@ export class MessengerService {
         theLastMess: null,
       })) as RoomChatDocument;
       const listMessenger = await this.findByIdRoomChat(checkRoom._id);
+      listMessenger.forEach((item: Messenger) => {
+        if (item.thumbnail)
+          item.thumbnail = `${process.env.URL_API}uploads/${item.thumbnail}`;
+      });
       return listMessenger;
     } catch (error) {
       console.log('find Mess by Id Customer error \n', error);
@@ -91,8 +96,16 @@ export class MessengerService {
   }
 
   update(id: string, updateMessengerDto: UpdateMessengerDto) {
-    console.log(updateMessengerDto);
-    return `This action updates a #${id} messenger`;
+    try {
+      return this.MessengerModel.findByIdAndUpdate(
+        { _id: id },
+        updateMessengerDto,
+      );
+    } catch (error) {
+      console.log('Lỗi cập nhật messenger');
+      console.log(error);
+      throw new InternalServerErrorException();
+    }
   }
 
   remove(id: string) {
