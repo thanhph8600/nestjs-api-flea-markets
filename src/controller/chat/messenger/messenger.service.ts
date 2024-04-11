@@ -35,7 +35,6 @@ export class MessengerService {
         idCustomer,
       )) as RoomChat;
       createMessengerDto.id_room_chat = roomChat._id;
-      console.log(createMessengerDto);
       return this.MessengerModel.create(createMessengerDto);
     } catch (error) {
       console.log(error);

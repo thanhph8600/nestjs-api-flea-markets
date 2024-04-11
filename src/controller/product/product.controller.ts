@@ -15,6 +15,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/middleware/auth/public';
 import { AuthGuard } from 'src/middleware/auth/auth.guard';
+import { ObjectId } from 'mongoose';
 
 @ApiBearerAuth()
 @ApiTags('products')
@@ -36,7 +37,7 @@ export class ProductController {
 
   @Public()
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: ObjectId) {
     return this.productService.findOne(id);
   }
 
@@ -65,12 +66,15 @@ export class ProductController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
+  update(
+    @Param('id') id: ObjectId,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
     return this.productService.update(id, updateProductDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: ObjectId) {
     return this.productService.remove(id);
   }
 }

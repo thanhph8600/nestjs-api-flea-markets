@@ -16,6 +16,11 @@ import { MessengerModule } from './controller/chat/messenger/messenger.module';
 import { WebSocketModule } from './web-socket/web-socket.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { HistoryModule } from './controller/wallet/history/history.module';
+import { WalletModule } from './controller/wallet/wallet/wallet.module';
+import { NotificationModule } from './controller/notification/notification.module';
+import { DeliveryAddressModule } from './controller/delivery-address/delivery-address.module';
+import { OrderModule } from './controller/order/order.module';
 
 @Module({
   imports: [
@@ -37,6 +42,11 @@ import { join } from 'path';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', '..', 'dist', 'client'),
     }),
+    HistoryModule,
+    WalletModule,
+    NotificationModule,
+    DeliveryAddressModule,
+    OrderModule,
   ],
 })
 export class AppModule {}

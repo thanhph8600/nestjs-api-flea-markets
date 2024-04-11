@@ -66,7 +66,7 @@ export class RoomChatService {
         const dateB = new Date(b.theLastMess.created_at);
         return dateB.getTime() - dateA.getTime();
       });
-      return this.handleThumbnailCustomer(listRoomChat);
+      return handleThumbnailCustomer(listRoomChat);
     } catch (error) {
       console.log('Error get list Room chat by Id Customer \n', error);
       throw new InternalServerErrorException();
@@ -103,14 +103,18 @@ export class RoomChatService {
       console.error('Phòng chưa được tạo');
     }
   }
-
-  handleThumbnailCustomer(listCustomer) {
-    listCustomer.forEach((room) => {
-      // Loop through each id_customer object in the id_customer array
-      room.id_customer.forEach((customer) => {
+}
+export function handleThumbnailCustomer(listCustomer) {
+  listCustomer.forEach((room) => {
+    // Loop through each id_customer object in the id_customer array
+    room.id_customer.forEach((customer) => {
+      if (
+        !customer.avata.startsWith('http://') &&
+        !customer.avata.startsWith('https://')
+      ) {
         customer.avata = `${process.env.URL_APi}uploads/${customer.avata}`;
-      });
+      }
     });
-    return listCustomer;
-  }
+  });
+  return listCustomer;
 }

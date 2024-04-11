@@ -10,3 +10,11 @@ export interface Customer extends Document {
   role: number;
   refresh_token: string;
 }
+
+export type payload = {
+  username: string;
+  phone: string;
+  sub: string;
+  role: string;
+  avata: string;
+};

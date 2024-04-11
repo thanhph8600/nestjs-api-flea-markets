@@ -14,4 +14,5 @@ export interface Product extends Document {
   thumbnail: Array<string>;
   created_at: Date;
   end_at: Date;
+  isHidden: boolean;
 }

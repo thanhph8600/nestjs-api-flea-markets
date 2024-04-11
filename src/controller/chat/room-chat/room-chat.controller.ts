@@ -13,7 +13,10 @@ import { RoomChatService } from './room-chat.service';
 import { CreateRoomChatDto } from './dto/create-room-chat.dto';
 import { UpdateRoomChatDto } from './dto/update-room-chat.dto';
 import { AuthGuard } from 'src/middleware/auth/auth.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('Chat room')
 @Controller('room-chat')
 export class RoomChatController {
   constructor(private readonly roomChatService: RoomChatService) {}

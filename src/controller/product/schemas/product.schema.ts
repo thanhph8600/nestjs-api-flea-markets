@@ -50,6 +50,9 @@ export class Product {
 
   @Prop({ default: () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) })
   end_at: Date;
+
+  @Prop({ default: false })
+  isHidden: boolean;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

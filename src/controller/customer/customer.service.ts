@@ -62,7 +62,6 @@ export class CustomerService {
   }
 
   update(id: string, updateCustomerDto: UpdateCustomerDto) {
-    console.log('updateCustomerDto', updateCustomerDto);
     return this.customerModel.findByIdAndUpdate({ _id: id }, updateCustomerDto);
   }
 

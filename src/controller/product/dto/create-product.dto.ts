@@ -37,4 +37,5 @@ export class CreateProductDto {
   created_at: Date;
 
   end_at: Date;
+  isHidden: boolean;
 }

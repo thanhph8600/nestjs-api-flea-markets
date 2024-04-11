@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Product } from './interface/product.interface';
 
 @Injectable()
@@ -23,7 +23,11 @@ export class ProductService {
   async findAll() {
     try {
       const listProduct = await this.productModel
-        .find({ status: 'complete', end_at: { $gte: new Date() } })
+        .find({
+          status: 'complete',
+          end_at: { $gte: new Date() },
+          isHidden: false,
+        })
         .sort({ created_at: -1 })
         .lean();
       this.handleStatusProduct();
@@ -35,14 +39,13 @@ export class ProductService {
     }
   }
 
-  async findOne(id: string) {
+  async findOne(id: ObjectId) {
     try {
       const product = await this.productModel
         .findById(id)
         .populate('id_category')
         .populate('id_customer')
-        .populate('id_category_detail')
-        .exec();
+        .populate('id_category_detail');
       product.thumbnail = (product.thumbnail as string[]).map((image) => {
         return `${process.env.URL_API}uploads/${image}`;
       });
@@ -63,6 +66,7 @@ export class ProductService {
         .find({
           id_category: idCategory,
           status: 'complete',
+          isHidden: false,
         })
         .sort({ created_at: -1 })
         .lean();
@@ -85,6 +89,7 @@ export class ProductService {
         .find({
           id_category_detail: idCategoryDetail,
           status: 'complete',
+          isHidden: false,
         })
         .sort({ created_at: -1 })
         .lean();
@@ -101,6 +106,7 @@ export class ProductService {
       const products = await this.productModel
         .find({
           title: { $regex: querySearch, $options: 'i' },
+          isHidden: false,
         })
         .sort({ created_at: -1 })
         .limit(10);
@@ -117,6 +123,7 @@ export class ProductService {
       const products = await this.productModel
         .find({
           id_customer: idCustomer,
+          isHidden: false,
         })
         .sort({ created_at: -1 })
         .lean();
@@ -128,7 +135,7 @@ export class ProductService {
     }
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: ObjectId, updateProductDto: UpdateProductDto) {
     try {
       const product = await this.productModel.findById(id);
       const date = new Date();
@@ -150,7 +157,7 @@ export class ProductService {
     }
   }
 
-  remove(id: string) {
+  remove(id: ObjectId) {
     return `This action removes a #${id} product`;
   }
 

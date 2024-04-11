@@ -35,6 +35,12 @@ export class WebSocketGateway {
     }
   }
 
+  @SubscribeMessage('notification')
+  async notification(payload) {
+    this.server.emit('notification', payload); // broadcast messages
+    return payload;
+  }
+
   @SubscribeMessage('identity')
   async identity(@MessageBody() data: number): Promise<number> {
     return data;

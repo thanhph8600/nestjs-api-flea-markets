@@ -14,7 +14,10 @@ import { UpdateMessengerDto } from './dto/update-messenger.dto';
 import { AuthGuard } from 'src/middleware/auth/auth.guard';
 import { ObjectId } from 'mongoose';
 import { CreateMessenger } from './interface/messenger.chat.interface';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('messenger')
 @Controller('messenger')
 export class MessengerController {
   constructor(private readonly messengerService: MessengerService) {}
