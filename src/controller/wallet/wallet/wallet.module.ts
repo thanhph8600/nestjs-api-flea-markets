@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { WalletController } from './wallet.controller';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -9,7 +9,7 @@ import { NotificationModule } from 'src/controller/notification/notification.mod
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Wallet.name, schema: WalletSchema }]),
-    HistoryModule,
+    forwardRef(() => HistoryModule),
     NotificationModule,
   ],
   controllers: [WalletController],

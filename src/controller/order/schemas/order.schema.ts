@@ -25,7 +25,13 @@ export class Order {
   price: number;
 
   @Prop({ default: 'waiting_confirm' })
-  status: string;
+  status:
+    | 'waiting_confirm'
+    | 'processing'
+    | 'delivering'
+    | 'delivered'
+    | 'successful_delivery'
+    | 'cancel_exp';
 
   @Prop({ type: SchemaTypes.Mixed })
   address: object;

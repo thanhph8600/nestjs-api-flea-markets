@@ -16,6 +16,9 @@ export class Notification {
   @Prop()
   content: string;
 
+  @Prop()
+  description: string;
+
   @Prop({ default: new Date() })
   created_at: Date;
 

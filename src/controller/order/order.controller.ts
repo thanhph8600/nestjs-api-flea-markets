@@ -14,6 +14,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/middleware/auth/auth.guard';
+import { ObjectId } from 'mongoose';
 
 @ApiBearerAuth()
 @ApiTags('order')
@@ -39,18 +40,23 @@ export class OrderController {
   @UseGuards(AuthGuard)
   @Get('seller/:idSeller')
   findByIdSeller(@Request() req) {
-    return this.orderService.findByIdSeller(req.user.usb);
+    return this.orderService.findByIdSeller(req.user.sub);
   }
 
   @UseGuards(AuthGuard)
   @Get('buyer/:idBuyer')
   findByIdBuyer(@Request() req) {
-    return this.orderService.findByIdBuyer(req.user.usb);
+    return this.orderService.findByIdBuyer(req.user.sub);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(id, updateOrderDto);
+  update(
+    @Param('id') id: ObjectId,
+    @Body() updateOrderDto: UpdateOrderDto,
+    @Request() req,
+  ) {
+    return this.orderService.update(id, updateOrderDto, req.user.sub);
   }
 
   @Delete(':id')

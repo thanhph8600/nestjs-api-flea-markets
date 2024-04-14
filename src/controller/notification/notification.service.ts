@@ -38,7 +38,7 @@ export class NotificationService {
         .exec();
       return this.handleThumbnail(listNotification);
     } catch (error) {
-      console.log('error find  by id customer');
+      console.log('error find notification by id customer');
       console.log(error);
       throw new InternalServerErrorException();
     }
@@ -108,14 +108,12 @@ export class NotificationService {
         });
       }
       if (item.id_product) {
-        item.id_product.forEach((product) => {
-          if (
-            !product.thumbnail.startsWith('http://') &&
-            !product.thumbnail.startsWith('https://')
-          ) {
-            product.thumbnail = `${process.env.URL_APi}uploads/${product.thumbnail}`;
-          }
-        });
+        const thumbnail = item.id_product[0].thumbnail[0];
+        if (
+          !thumbnail.startsWith('http://') &&
+          !thumbnail.startsWith('https://')
+        )
+          item.id_product[0].thumbnail[0] = `${process.env.URL_APi}uploads/${item.id_product[0].thumbnail[0]}`;
       }
     });
     return listNotification;

@@ -6,12 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { HistoryService } from './history.service';
 import { CreateHistoryDto } from './dto/create-history.dto';
 import { UpdateHistoryDto } from './dto/update-history.dto';
-import { ObjectId } from 'mongoose';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/middleware/auth/auth.guard';
 
 @ApiBearerAuth()
 @ApiTags('history')
@@ -29,9 +31,10 @@ export class HistoryController {
     return this.historyService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Get(':idWallet')
-  findByIdCustomer(@Param('idWallet') idWallet: ObjectId) {
-    return this.historyService.findByIdWallet(idWallet);
+  findByIdCustomer(@Request() req) {
+    return this.historyService.findByIdWallet(req.user.sub);
   }
 
   @Patch(':id')

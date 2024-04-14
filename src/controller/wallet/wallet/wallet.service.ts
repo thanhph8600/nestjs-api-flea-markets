@@ -1,5 +1,7 @@
 import {
+  forwardRef,
   HttpException,
+  Inject,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -17,6 +19,7 @@ import { CreateNotificationDto } from 'src/controller/notification/dto/create-no
 export class WalletService {
   constructor(
     @InjectModel('Wallet') private readonly walletModel: Model<Wallet>,
+    @Inject(forwardRef(() => HistoryService))
     private readonly historyService: HistoryService,
     private readonly notificaionService: NotificationService,
   ) {}
@@ -58,7 +61,8 @@ export class WalletService {
     }
   }
 
-  async update(id: string, updateWalletDto: UpdateWalletDto) {
+  async update(id: ObjectId, updateWalletDto: UpdateWalletDto) {
+    console.log(updateWalletDto);
     try {
       const wallet = await this.walletModel.findById(id);
       if (updateWalletDto.method == 'plus') {
@@ -101,22 +105,19 @@ export class WalletService {
     const data: CreateHistoryDto = {
       id_wallet,
       transaction: '',
-      content: '',
+      content: createHistory.content,
       amount: createHistory.amount,
       current_amount: createHistory.current_amount,
       created_at: new Date(),
     };
     if (createHistory.method == 'plus') {
       data.transaction = 'Nạp tiền';
-      data.content = 'Nạp tiền vào ví';
     }
     if (createHistory.method == 'minus') {
       data.transaction = 'Thanh toán';
-      data.content = 'Thanh toán đơn hàng';
     }
     if (createHistory.method == 'tax') {
       data.transaction = 'Đóng thuế';
-      data.content = 'Khấu trừ thuế đơn hàng (VAT 10%)';
     }
     return data;
   }
@@ -128,20 +129,21 @@ export class WalletService {
     const data: CreateNotificationDto = {
       id_customer,
       id_product: null,
-      content: '',
+      content: 'Biến động số dư',
+      description: '',
       created_at: new Date(),
       isWatched: false,
       link: '/wallet',
       isNew: true,
     };
     if (createHistory.method == 'plus') {
-      data.content = 'Nạp tiền vào ví thành công';
+      data.description = `+ ${createHistory.amount} `;
     }
     if (createHistory.method == 'minus') {
-      data.content = 'Thanh toán đơn hàng thành công';
+      data.description = `- ${createHistory.amount} `;
     }
     if (createHistory.method == 'tax') {
-      data.content = 'Khấu trừ thuế đơn hàng (VAT 10%)';
+      data.description = `- ${createHistory.amount} `;
     }
     return data;
   }

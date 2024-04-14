@@ -6,6 +6,12 @@ export interface Notification extends Document {
   id_product: ObjectId;
   price: number;
   address: object;
-  status: string;
+  status:
+    | 'waiting_confirm'
+    | 'processing'
+    | 'delivering'
+    | 'delivered'
+    | 'successful_delivery'
+    | 'cancel_exp';
   created_at: Date;
 }

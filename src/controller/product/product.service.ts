@@ -31,7 +31,7 @@ export class ProductService {
         .sort({ created_at: -1 })
         .lean();
       this.handleStatusProduct();
-      const newProduct = this.handleThumbnailProduct(listProduct);
+      const newProduct = handleThumbnailProduct(listProduct);
       return newProduct;
     } catch (error) {
       console.log('error', error);
@@ -75,7 +75,7 @@ export class ProductService {
           id_category_detail: idCategory,
         });
       }
-      const newProduct = this.handleThumbnailProduct(products);
+      const newProduct = handleThumbnailProduct(products);
       return newProduct;
     } catch (error) {
       console.log('error', error);
@@ -93,7 +93,7 @@ export class ProductService {
         })
         .sort({ created_at: -1 })
         .lean();
-      const newProduct = this.handleThumbnailProduct(products);
+      const newProduct = handleThumbnailProduct(products);
       return newProduct;
     } catch (error) {
       console.log('error', error);
@@ -127,7 +127,7 @@ export class ProductService {
         })
         .sort({ created_at: -1 })
         .lean();
-      const newProduct = this.handleThumbnailProduct(products);
+      const newProduct = handleThumbnailProduct(products);
       return newProduct;
     } catch (error) {
       console.log('error', error);
@@ -161,16 +161,6 @@ export class ProductService {
     return `This action removes a #${id} product`;
   }
 
-  handleThumbnailProduct(listProduct) {
-    const updatedProducts = listProduct.map((product) => {
-      const updatedThumbnail = product.thumbnail.map((imageUrl) => {
-        return `${process.env.URL_API}uploads/${imageUrl}`;
-      });
-      return { ...product, thumbnail: updatedThumbnail };
-    });
-    return updatedProducts;
-  }
-
   async handleStatusProduct() {
     const listProduct = await this.productModel
       .find({ status: 'complete', end_at: { $lt: new Date() } })
@@ -179,4 +169,14 @@ export class ProductService {
       this.update(product._id, { status: 'expired' });
     });
   }
+}
+
+export function handleThumbnailProduct(listProduct) {
+  const updatedProducts = listProduct.map((product) => {
+    const updatedThumbnail = product.thumbnail.map((imageUrl) => {
+      return `${process.env.URL_API}uploads/${imageUrl}`;
+    });
+    return { ...product, thumbnail: updatedThumbnail };
+  });
+  return updatedProducts;
 }

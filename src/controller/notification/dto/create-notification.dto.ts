@@ -13,6 +13,10 @@ export class CreateNotificationDto {
   @IsNotEmpty()
   content: string;
 
+  @ApiProperty()
+  @IsNotEmpty()
+  description: string;
+
   created_at: Date;
 
   isWatched: boolean;

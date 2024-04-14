@@ -24,7 +24,13 @@ export class CreateOrderDto {
   address: object;
 
   @ApiProperty()
-  status: string;
+  status:
+    | 'waiting_confirm'
+    | 'processing'
+    | 'delivering'
+    | 'delivered'
+    | 'successful_delivery'
+    | 'cancel_exp';
 
   @ApiProperty()
   created_at: Date;

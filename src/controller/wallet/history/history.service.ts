@@ -1,14 +1,22 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { CreateHistoryDto } from './dto/create-history.dto';
 import { UpdateHistoryDto } from './dto/update-history.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { History } from './schemas/history.schema';
+import { WalletService } from '../wallet/wallet.service';
 
 @Injectable()
 export class HistoryService {
   constructor(
     @InjectModel('History') private readonly HistoryModel: Model<History>,
+    @Inject(forwardRef(() => WalletService))
+    private readonly walletService: WalletService,
   ) {}
   create(createHistoryDto: CreateHistoryDto) {
     try {
@@ -28,9 +36,10 @@ export class HistoryService {
     return `This action returns a #${id} history`;
   }
 
-  findByIdWallet(idWallet: ObjectId) {
+  async findByIdWallet(idCustomer: ObjectId) {
     try {
-      return this.HistoryModel.find({ id_wallet: idWallet })
+      const wallet = await this.walletService.findOneByIdCustomer(idCustomer);
+      return this.HistoryModel.find({ id_wallet: wallet._id })
         .sort({ created_at: -1 })
         .exec();
     } catch (error) {

@@ -4,4 +4,5 @@ import { CreateWalletDto } from './create-wallet.dto';
 export class UpdateWalletDto extends PartialType(CreateWalletDto) {
   method: string;
   amount: number;
+  content: string;
 }

@@ -14,6 +14,7 @@ import { CreateWalletDto } from './dto/create-wallet.dto';
 import { UpdateWalletDto } from './dto/update-wallet.dto';
 import { AuthGuard } from 'src/middleware/auth/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ObjectId } from 'mongoose';
 
 @ApiBearerAuth()
 @ApiTags('wallet')
@@ -43,7 +44,7 @@ export class WalletController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWalletDto: UpdateWalletDto) {
+  update(@Param('id') id: ObjectId, @Body() updateWalletDto: UpdateWalletDto) {
     return this.walletService.update(id, updateWalletDto);
   }
 
