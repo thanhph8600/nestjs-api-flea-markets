@@ -50,9 +50,10 @@ export class NotificationController {
     return this.notificationService.update(id, updateNotificationDto);
   }
 
+  @UseGuards(AuthGuard)
   @Patch('customer/:idCustomer')
-  updateIsNew(@Param('idCustomer') idCustomer: string) {
-    return this.notificationService.updateIsNewForCustomer(idCustomer);
+  updateIsNew(@Request() req) {
+    return this.notificationService.updateIsNewForCustomer(req.user.sub);
   }
 
   @Patch('isWatched/:isWatched')

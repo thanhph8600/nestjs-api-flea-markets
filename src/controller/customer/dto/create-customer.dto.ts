@@ -24,4 +24,6 @@ export class CreateCustomerDto {
 
   @ApiProperty()
   refresh_token: string;
+
+  isBan: boolean;
 }

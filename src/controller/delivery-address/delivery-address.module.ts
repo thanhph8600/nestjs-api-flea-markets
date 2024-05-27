@@ -15,5 +15,6 @@ import {
   ],
   controllers: [DeliveryAddressController],
   providers: [DeliveryAddressService],
+  exports: [DeliveryAddressService],
 })
 export class DeliveryAddressModule {}

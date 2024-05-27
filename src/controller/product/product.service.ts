@@ -4,15 +4,31 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId } from 'mongoose';
 import { Product } from './interface/product.interface';
+import { DeliveryAddressService } from '../delivery-address/delivery-address.service';
+import { CreateDeliveryAddressDto } from '../delivery-address/dto/create-delivery-address.dto';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectModel('Product') private readonly productModel: Model<Product>,
+    private readonly deliveryAddressService: DeliveryAddressService,
   ) {}
   async create(createProductDto: CreateProductDto) {
     try {
       const createProduct = await this.productModel.create(createProductDto);
+      const product = await this.productModel
+        .find({ _id: createProduct })
+        .populate('id_customer')
+        .exec();
+      const data: CreateDeliveryAddressDto = {
+        id_customer: createProductDto.id_customer,
+        name: product[0].id_customer[0].name,
+        phone: product[0].id_customer[0].phone,
+        email: product[0].id_customer[0].email,
+        address: createProduct.address,
+        isDefault: true,
+      };
+      await this.deliveryAddressService.create(data);
       return createProduct;
     } catch (error) {
       console.log('error', error);
@@ -158,7 +174,12 @@ export class ProductService {
   }
 
   remove(id: ObjectId) {
-    return `This action removes a #${id} product`;
+    try {
+      return this.productModel.findByIdAndDelete({ _id: id });
+    } catch (error) {
+      console.log('error', error);
+      throw new InternalServerErrorException();
+    }
   }
 
   async handleStatusProduct() {

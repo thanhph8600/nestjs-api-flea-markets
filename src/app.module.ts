@@ -21,6 +21,9 @@ import { WalletModule } from './controller/wallet/wallet/wallet.module';
 import { NotificationModule } from './controller/notification/notification.module';
 import { DeliveryAddressModule } from './controller/delivery-address/delivery-address.module';
 import { OrderModule } from './controller/order/order.module';
+import { PaymentVnpayModule } from './controller/payment-vnpay/payment-vnpay.module';
+import { GoogleModule } from './middleware/login/google/google.module';
+import { FacebookModule } from './middleware/login/facebook/facebook.module';
 
 @Module({
   imports: [
@@ -47,6 +50,9 @@ import { OrderModule } from './controller/order/order.module';
     NotificationModule,
     DeliveryAddressModule,
     OrderModule,
+    PaymentVnpayModule,
+    GoogleModule,
+    FacebookModule,
   ],
 })
 export class AppModule {}

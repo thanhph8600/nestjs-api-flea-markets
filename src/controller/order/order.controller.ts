@@ -40,12 +40,14 @@ export class OrderController {
   @UseGuards(AuthGuard)
   @Get('seller/:idSeller')
   findByIdSeller(@Request() req) {
+    if (!req.user) return;
     return this.orderService.findByIdSeller(req.user.sub);
   }
 
   @UseGuards(AuthGuard)
   @Get('buyer/:idBuyer')
   findByIdBuyer(@Request() req) {
+    if (!req.user) return;
     return this.orderService.findByIdBuyer(req.user.sub);
   }
 

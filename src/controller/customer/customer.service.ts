@@ -35,16 +35,19 @@ export class CustomerService {
           HttpStatus.BAD_REQUEST,
         );
       }
-
-      createCustomerDto.password = await this.hasdPass(
-        createCustomerDto.password,
-      );
-      const newUser = await this.customerModel.create(createCustomerDto);
-      return newUser;
+      this.addUser(createCustomerDto);
     } catch (error) {
       console.log('error', error);
       throw new InternalServerErrorException();
     }
+  }
+
+  async addUser(createCustomerDto: CreateCustomerDto) {
+    createCustomerDto.password = await this.hasdPass(
+      createCustomerDto.password,
+    );
+    const newUser = await this.customerModel.create(createCustomerDto);
+    return newUser;
   }
 
   findAll() {
@@ -53,12 +56,21 @@ export class CustomerService {
 
   async findOne(id: string) {
     const customer = await this.customerModel.findById(id);
-    customer.avata = `${process.env.URL_API}uploads/${customer.avata}`;
+    if (
+      !customer.avata.startsWith('http://') &&
+      !customer.avata.startsWith('https://')
+    ) {
+      customer.avata = `${process.env.URL_API}uploads/${customer.avata}`;
+    }
     return customer;
   }
 
   findOneWithPhone(phone: string) {
     return this.customerModel.findOne({ phone: phone });
+  }
+
+  findOneWithEmail(email: string) {
+    return this.customerModel.findOne({ email });
   }
 
   update(id: string, updateCustomerDto: UpdateCustomerDto) {

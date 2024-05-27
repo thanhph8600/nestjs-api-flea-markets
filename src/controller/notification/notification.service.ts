@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Notification } from './schemas/notification.schema';
 import { WebSocketGateway } from 'src/web-socket/web-socket.gateway';
 
@@ -43,8 +43,11 @@ export class NotificationService {
       throw new InternalServerErrorException();
     }
   }
-  async updateIsNewForCustomer(customerId: string): Promise<void> {
+  async updateIsNewForCustomer(customerId: ObjectId): Promise<void> {
     try {
+      if (!customerId) {
+        return;
+      }
       await this.notificationModel
         .updateMany({ id_customer: customerId }, { $set: { isNew: false } })
         .exec();
@@ -55,6 +58,7 @@ export class NotificationService {
     }
   }
   async updateIsWatchedForCustomer(id: string): Promise<void> {
+    if (!id) return;
     try {
       await this.notificationModel.findOneAndUpdate(
         { _id: id },
@@ -77,6 +81,7 @@ export class NotificationService {
 
   async update(id: string, updateNotificationDto: UpdateNotificationDto) {
     console.log('update notifi \n', updateNotificationDto);
+    if (!updateNotificationDto) return;
     try {
       const update = await this.notificationModel.findByIdAndUpdate({
         _id: id,

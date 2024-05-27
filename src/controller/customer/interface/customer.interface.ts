@@ -9,6 +9,7 @@ export interface Customer extends Document {
   avata: string;
   role: number;
   refresh_token: string;
+  isBan: boolean;
 }
 
 export type payload = {

@@ -13,6 +13,7 @@ export class SpecificationService {
   ) {}
 
   async create(createSpecificationDto: CreateSpecificationDto) {
+    console.log(createSpecificationDto);
     const specification = await this.specificationModel.findOne({
       name: createSpecificationDto.name,
     });

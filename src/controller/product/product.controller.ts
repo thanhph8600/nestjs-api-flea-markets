@@ -6,15 +6,12 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
-  Request,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/middleware/auth/public';
-import { AuthGuard } from 'src/middleware/auth/auth.guard';
 import { ObjectId } from 'mongoose';
 
 @ApiBearerAuth()
@@ -59,10 +56,9 @@ export class ProductController {
     return this.productService.findBySearch(query);
   }
 
-  @UseGuards(AuthGuard)
   @Get('customer/:id')
-  findProductByCustomer(@Request() req) {
-    return this.productService.findByIdCustomer(req.user.sub);
+  findProductByCustomer(@Param('id') id: string) {
+    return this.productService.findByIdCustomer(id);
   }
 
   @Patch(':id')

@@ -26,6 +26,9 @@ export class Customer {
 
   @Prop({ default: '' })
   refresh_token: string;
+
+  @Prop({ default: false })
+  isBan: boolean;
 }
 
 export const CustomerSchema = SchemaFactory.createForClass(Customer);

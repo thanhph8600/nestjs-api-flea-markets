@@ -28,6 +28,10 @@ export class AuthService {
         return new HttpException('Mật khẩu không đúng!', 401);
       }
 
+      if (user.isBan) {
+        return new HttpException('Tài khoản của bạn đã bị khóa!', 401);
+      }
+
       const payload = this.payload(user);
 
       return this.generateToken(payload);
@@ -55,7 +59,7 @@ export class AuthService {
     }
   }
 
-  private async generateToken(payload) {
+  async generateToken(payload) {
     try {
       const access_token = await this.jwtService.signAsync(payload);
       const refresh_token = await this.jwtService.signAsync(payload, {
@@ -71,13 +75,20 @@ export class AuthService {
   }
 
   payload(user: Customer) {
-    return {
+    const payload = {
       username: user.name,
       phone: user.phone,
       sub: user._id,
       role: user.role == 1 ? 'customer' : 'admin',
-      avata: process.env.URL_API + 'uploads/' + user.avata,
+      avata: user.avata,
     };
+    if (
+      !payload.avata.startsWith('http://') &&
+      !payload.avata.startsWith('https://')
+    ) {
+      payload.avata = `${process.env.URL_API}uploads/${payload.avata}`;
+    }
+    return payload;
   }
 
   async register(signUpDto: CreateCustomerDto) {

@@ -41,6 +41,20 @@ export class WebSocketGateway {
     return payload;
   }
 
+  @SubscribeMessage('payment')
+  async payment(payload) {
+    console.log(payload);
+    this.server.emit('payment', payload); // broadcast messages
+    return payload;
+  }
+
+  @SubscribeMessage('login')
+  async login(payload) {
+    console.log(payload);
+    this.server.emit('login', payload); // broadcast messages
+    return payload;
+  }
+
   @SubscribeMessage('identity')
   async identity(@MessageBody() data: number): Promise<number> {
     return data;
