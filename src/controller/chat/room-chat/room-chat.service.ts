@@ -112,7 +112,7 @@ export function handleThumbnailCustomer(listCustomer) {
         !customer.avata.startsWith('http://') &&
         !customer.avata.startsWith('https://')
       ) {
-        customer.avata = `${process.env.URL_APi}uploads/${customer.avata}`;
+        customer.avata = `${process.env.URL_API}uploads/${customer.avata}`;
       }
     });
   });
