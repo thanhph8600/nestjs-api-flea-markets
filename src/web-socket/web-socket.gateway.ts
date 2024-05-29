@@ -6,7 +6,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { Messenger } from 'src/controller/chat/messenger/interface/messenger.chat.interface';
+import { CreateMessenger } from 'src/controller/chat/messenger/interface/messenger.chat.interface';
 import { ClientToServerEvents, ServerToClientEvents } from './chat.interface';
 
 @WebSocketGate({
@@ -23,8 +23,8 @@ export class WebSocketGateway {
   @SubscribeMessage('messenger')
   async handleEvent(
     @MessageBody()
-    payload: Messenger,
-  ): Promise<Messenger> {
+    payload: CreateMessenger,
+  ): Promise<CreateMessenger> {
     console.log(payload);
     try {
       this.server.emit('messenger', payload); // broadcast messages

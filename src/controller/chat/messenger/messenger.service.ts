@@ -14,6 +14,7 @@ import {
   RoomChat,
   RoomChatDocument,
 } from '../room-chat/schemas/roomChat.chat.schema';
+import { WebSocketGateway } from 'src/web-socket/web-socket.gateway';
 
 @Injectable()
 export class MessengerService {
@@ -21,6 +22,7 @@ export class MessengerService {
     @InjectModel('Messenger') private readonly MessengerModel: Model<Messenger>,
     @Inject(forwardRef(() => RoomChatService))
     private readonly roomChatService: RoomChatService,
+    private readonly webSocket: WebSocketGateway,
   ) {}
   async create(createMessengerDto: MessengerInterFace) {
     try {
@@ -35,7 +37,8 @@ export class MessengerService {
         idCustomer,
       )) as RoomChat;
       createMessengerDto.id_room_chat = roomChat._id;
-      return this.MessengerModel.create(createMessengerDto);
+      this.webSocket.handleEvent(createMessengerDto);
+      return await this.MessengerModel.create(createMessengerDto);
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException();
