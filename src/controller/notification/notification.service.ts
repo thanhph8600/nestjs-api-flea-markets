@@ -108,7 +108,7 @@ export class NotificationService {
             !customer.avata.startsWith('http://') &&
             !customer.avata.startsWith('https://')
           ) {
-            customer.avata = `${process.env.URL_APi}uploads/${customer.avata}`;
+            customer.avata = `${process.env.URL_API}uploads/${customer.avata}`;
           }
         });
       }
@@ -118,7 +118,7 @@ export class NotificationService {
           !thumbnail.startsWith('http://') &&
           !thumbnail.startsWith('https://')
         )
-          item.id_product[0].thumbnail[0] = `${process.env.URL_APi}uploads/${item.id_product[0].thumbnail[0]}`;
+          item.id_product[0].thumbnail[0] = `${process.env.URL_API}uploads/${item.id_product[0].thumbnail[0]}`;
       }
     });
     return listNotification;
